@@ -1,4 +1,5 @@
 <resources>
-  <string name="app_name">Codepush plugin Demo</string>
-  <string name="CodePushDeploymentKey">dk_8605948c52aa922bd9471d61486efcf6</string>
+  <string name="app_name">Turbopush Demo</string>
+  <string name="expo_system_ui_user_interface_style" translatable="false">automatic</string>
+  <string name="CodePushDeploymentKey">EMPTY_KEY</string>
 </resources>

@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
-import { Platform } from "react-native";
 import CodePush from "@turbopush/react-native-code-push";
+import { useCallback, useState } from "react";
+import { Platform } from "react-native";
+import { storage } from "../storage";
 
 type CodepushStatus =
   | keyof typeof CodePush.SyncStatus
@@ -22,22 +23,27 @@ const CODEPUSH_STATUS_MESSAGE: (keyof typeof CodePush.SyncStatus)[] = [
   "INSTALLING_UPDATE",
 ];
 
-const CodePushKey =
+const ENV_DEPLOYMENT_KEY = storage.getDeploymentKey() || (
   Platform.OS === "ios"
     ? process.env.EXPO_PUBLIC_CODE_PUSH_KEY_IOS
-    : process.env.EXPO_PUBLIC_CODE_PUSH_KEY_ANDROID;
+    : process.env.EXPO_PUBLIC_CODE_PUSH_KEY_ANDROID);
 
 export const useCodepush = () => {
-  const [visible, setVisible] = useState<boolean>(false);
-  const [percentil, setPercentil] = useState<undefined | string>();
+  const [progress, setProgress] = useState<undefined | string>();
   const [version, setVersion] = useState("");
   const [status, setStatus] = useState<CodepushStatus>("UNKNOWN");
+
+  const clearUpdates = useCallback(() => {
+    CodePush.clearUpdates();
+    console.log("codepush_clearUpdates");
+  }, []);
+
 
   const syncCodePush = useCallback(async () => {
     try {
       setStatus("START");
 
-      const checkForUpdate = await CodePush.checkForUpdate(CodePushKey);
+      const checkForUpdate = await CodePush.checkForUpdate(ENV_DEPLOYMENT_KEY);
 
       console.log(`codepush_checkForUpdate`, {
         checkForUpdate,
@@ -56,7 +62,7 @@ export const useCodepush = () => {
 
       CodePush.sync(
         {
-          deploymentKey: CodePushKey,
+          deploymentKey: ENV_DEPLOYMENT_KEY,
           installMode: CodePush.InstallMode.ON_NEXT_SUSPEND,
           mandatoryInstallMode: CodePush.InstallMode.IMMEDIATE,
           rollbackRetryOptions: {
@@ -82,7 +88,7 @@ export const useCodepush = () => {
           );
           const calcPercentage = (receivedBytes / totalBytes) * 100;
           const percentageFinal = Math.floor(calcPercentage);
-          setPercentil(`${percentageFinal}%`);
+          setProgress(`${percentageFinal}%`);
         }
       );
     } catch (error) {
@@ -100,8 +106,10 @@ export const useCodepush = () => {
 
   return {
     syncCodePush,
-    percentil,
+    progress,
     version,
     status,
+    clearUpdates,
+    turbopushKey: ENV_DEPLOYMENT_KEY,
   };
 };

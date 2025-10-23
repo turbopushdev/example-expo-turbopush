@@ -1,47 +1,44 @@
 import { ExpoConfig } from "expo/config";
+import {buildDiskCacheProvider} from 'expo-build-disk-cache'
 
 import * as pkg from "./package.json";
 
 const config: ExpoConfig = {
-  slug: "test-codepush",
-  owner: "test-codepush",
+  slug: "turbopush-expo-demo",
+  owner: "turbopush-expo-demo",
   android: {
-    package: "com.test.codepush",
+    package: "com.turbopush.expodemo",
     versionCode: 1,
     version: pkg.version,
   },
   newArchEnabled: true,
   assetBundlePatterns: ["**/*"],
   experiments: {
-    tsconfigPaths: true,
     typedRoutes: true,
+    reactCompiler: true,
+    buildCacheProvider: buildDiskCacheProvider({
+      cacheDir: 'node_modules/.expo-build-disk-cache',
+      cacheGcTimeDays: 14,
+    }),
   },
   ios: {
     buildNumber: "1",
     supportsTablet: true,
-    bundleIdentifier: "com.test.codepush",
+    bundleIdentifier: "com.turbopush.expodemo",
     version: pkg.version,
   },
   updates: {
     enabled: false,
     fallbackToCacheTimeout: 0,
   },
-  name: "Codepush plugin Demo",
+  name: "Turbopush Demo",
   orientation: "portrait",
   plugins: [
     [
-      'expo-build-properties',
+      "expo-build-properties",
       {
-        android: {
-          buildToolsVersion: '34.0.0',
-          compileSdkVersion: 35,
-          targetSdkVersion: 34,
-        },
         ios: {
           deploymentTarget: "15.5",
-          hermes: true,
-          privacyManifestAggregationEnabled: true,
-          useFrameworks: 'static',
         },
       },
     ],
@@ -49,16 +46,18 @@ const config: ExpoConfig = {
       "@turbopush/turbopush-expo-plugin",
       {
         android: {
-          CodePushDeploymentKey: process.env.EXPO_PUBLIC_CODE_PUSH_KEY_ANDROID ?? "EMPTY_KEY",
+          CodePushDeploymentKey:
+            process.env.EXPO_PUBLIC_CODE_PUSH_KEY_ANDROID ?? "EMPTY_KEY",
         },
         ios: {
-          CodePushDeploymentKey: process.env.EXPO_PUBLIC_CODE_PUSH_KEY_IOS ?? "EMPTY_KEY",
+          CodePushDeploymentKey:
+            process.env.EXPO_PUBLIC_CODE_PUSH_KEY_IOS ?? "EMPTY_KEY",
         },
       },
     ],
     "expo-router",
   ],
-  scheme: "com.test.codepush",
+  scheme: "turbopush-demo",
   userInterfaceStyle: "automatic",
   version: pkg.version,
 };

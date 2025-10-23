@@ -1,4 +1,4 @@
-package com.test.codepush
+package com.turbopush.expodemo
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

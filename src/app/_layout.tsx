@@ -1,12 +1,15 @@
-import CodePush from "@turbopush/react-native-code-push";
-import "../global.css";
-import { Slot } from "expo-router";
 import { ErrorBoundary } from "@/ErrorBoundary";
+import CodePush from "@turbopush/react-native-code-push";
+import { Slot } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import "../global.css";
 
 function RootLayout() {
   return (
     <ErrorBoundary>
-      <Slot />
+      <SafeAreaView className="flex-1">
+        <Slot />
+      </SafeAreaView>
     </ErrorBoundary>
   );
 }

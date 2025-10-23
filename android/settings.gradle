@@ -31,7 +31,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
 }
 expoAutolinking.useExpoModules()
 
-rootProject.name = 'Codepush plugin Demo'
+rootProject.name = 'Turbopush Demo'
 
 expoAutolinking.useExpoVersionCatalog()
 

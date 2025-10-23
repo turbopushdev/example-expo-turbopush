@@ -10,6 +10,7 @@ web-build/
 expo-env.d.ts
 
 # Native
+.kotlin/
 *.orig.*
 *.jks
 *.p8
@@ -29,8 +30,6 @@ yarn-error.*
 .DS_Store
 *.pem
 
-.gitconfig
-
 # local env files
 .env*.local
 
@@ -41,16 +40,4 @@ app-example
 
 .env
 
-# Expo
-.expo
-dist/
-web-build/
-build/
-
-# Yarn
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+.vscode
